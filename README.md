@@ -1,129 +1,306 @@
-# Solana Ultra-Fast New Token Sniper with Jito Shred Stream 🚀⚡
+# Multi-Chain Prediction Market Trading System
 
-## Overview
+A unified Python framework for trading across multiple prediction market platforms on different blockchains. This project provides a single interface to interact with Polymarket, Augur, Moonopol, Myriad Markets, Drift BET, O.LAB, Polkamarkets, and Hedgehog Markets.
 
-Introducing the **Solana Ultra-Fast New Token Sniper** powered by **Jito Shred Stream** and written in **Rust** 🦀. This cutting-edge sniper detects newly launched tokens on **Raydium** and **Pump.fun** and executes buys at unprecedented speeds using Jito's low-latency shred streaming technology. Built with Rust for maximum performance, memory safety, and security. The ultimate tool for both novice and experienced traders seeking the competitive edge.
+## Features
 
----
+- **Multi-Blockchain Support**: Trade on Ethereum, Polygon, Solana, and BNB Chain
+- **Unified Interface**: Single API to interact with all supported prediction markets
+- **Platform Support**:
+  - **Polymarket** (Polygon)
+  - **Augur** (Ethereum)
+  - **Moonopol** (Solana)
+  - **Myriad Markets** (Ethereum/Polygon)
+  - **Drift BET** (Solana)
+  - **O.LAB** (BNB Chain)
+  - **Polkamarkets** (Polygon)
+  - **Hedgehog Markets** (Ethereum)
 
-## Key Features
+- **Core Functionality**:
+  - Fetch markets and market data
+  - Get orderbooks and prices
+  - Create and close positions
+  - Check balances across chains
+  - Monitor positions across platforms
 
-### ⚡ Jito Shred Stream Integration
-- **Bleeding-Edge Speed**: Harness the power of **Jito Shred Stream** for the fastest possible transaction detection and execution. Get ahead of the competition with direct shred-level data access!
+## Architecture
 
-### 🚀 Unmatched Performance
-- **Lightning-Quick Transactions**: Leveraging Rust's exceptional performance combined with Jito Shred Stream, snipe new tokens in the same block. Zero delays, maximum opportunities!
-
-### 🔒 Safety First
-- **Robust Security**: Rust's safety guarantees minimize bugs and vulnerabilities, ensuring your trading activities are secure. Trade with confidence and peace of mind.
-
-### 📊 Multiple gRPC Connections
-- **Stay Updated**: Effortlessly connect to top Solana data providers like **Helius** and **Yellowstone** through multiple gRPC connections. Get real-time updates and make informed trading decisions.
-
-### 👩‍💻 User-Friendly Interface
-- **Intuitive Design**: Our sniper bot features a clean and accessible interface, making it easy for users of all experience levels to navigate. Start trading in no time!
-
-### 🛠️ Rich Utilities
-- **Advanced Features**:
-  - **jito-shred-stream**: Access raw shred data for the fastest possible transaction detection.
-  - **jito-confirm**: Engage in low-latency transactions on platforms like Raydium and Pumpfun.
-  - **jito-bundle**: Bundle buy/sell actions with up to **20 wallets** in Raydium/Pumpfun, enhancing your trading strategy and flexibility.
-
----
-
-## Directory Structure
+The project follows a modular architecture with clear separation of concerns:
 
 ```
 src/
-├── core/
-│   ├── token.rs        # Token definitions and handling
-│   └── tx.rs        # Transaction handling
-| 
-├── engine/
-│   ├── swap.rs        # Token swap(buy/sell) functionalities in various Dexs
-│   └── monitor        # New token monitoring(and parse tx) in Dexs using geyser rpc, and normal rpc
-│       └── helius.rs        # Helius gRpc for tx listen and parse.
-│       └── yellowstone.rs        # Yellowstone gRpc for tx listen and parse.
-|
-├── dex/
-│   ├── pump_fun.rs        # Pump.fun
-│   ├── raydium.rs        # Raydium
-│   ├── meteora.rs        # Meteora
-│   └── orca.rs        # Orca
-│
-├── services/
-│   ├── jito.rs        # Jito service provides ultra-fast transaction confirmation
-│   ├── nozomi.rs        # Jito service provides ultra-fast transaction confirmation
-│   ├── zeroslot.rs        # Jito service provides ultra-fast transaction confirmation
-│   └── nextblock.rs        # NextBlock service provides the ultra-fast transaction confirmation in unique way
-|
-├── common/
-│   ├── logger.rs        # Logs to be clean and convenient to monitor.
-│   └── utils.rs        # Utility functions used across the project
-│
-├── lib.rs
-└── main.rs
+├── core/              # Core interfaces and data models
+│   └── interfaces.py  # Abstract base classes and data structures
+├── blockchains/       # Blockchain connectors
+│   ├── ethereum.py   # Ethereum connector
+│   ├── polygon.py    # Polygon connector (EVM-compatible)
+│   ├── solana.py     # Solana connector
+│   └── bnb_chain.py  # BNB Chain connector (EVM-compatible)
+├── markets/          # Prediction market platform connectors
+│   ├── polymarket.py
+│   ├── augur.py
+│   ├── moonopol.py
+│   ├── myriad.py
+│   ├── drift.py
+│   ├── olab.py
+│   ├── polkamarkets.py
+│   └── hedgehog.py
+├── trader/           # Unified trading orchestrator
+│   └── orchestrator.py
+└── utils/            # Utilities
+    └── config.py     # Configuration management
 ```
----
-## Trial Versions
 
-### **Solana Pumpfun Sniper - Jito Shredstream (Demo)**  
-> 🗂️ [pumpfun_sniper_jitoshred_demo.zip](https://github.com/user-attachments/files/23825331/pumpfun_sniper_jitoshred_demo.zip)
+## Installation
 
-**Strategy Details:**
-- **Entry Trigger:** Monitor user purchases of the new tokens on Dex; execute a buy order upon detection.
-- **Exit Trigger:** Monitor user sales of tokens by checking tp/sl; execute a sell order upon detection.
-- **Time Limitation:** If a position remains open for more than 60 seconds, initiate an automatic sell.  
-*(Note: The tp/sl, as well as the 60-second time limit, are adjustable parameters via environment settings.)*
----
-
-### How To Run
-1. Environment Variables Settings
-```plaintext
-PRIVATE_KEY= # your wallet priv_key
-RPC_API_KEY= #your helius rpc api-key (Please use premium version that has Geyser Enhanced Websocket)
-SLIPPAGE=10
-JITO_BLOCK_ENGINE_URL=https://ny.mainnet.block-engine.jito.wtf
-JITO_TIP_VALUE=0.00927
-TIME_EXCEED=60 # seconds; time limit for volume non-increasing
-TOKEN_AMOUNT=0.0000001 # token amount to purchase
-TP=3 #3 times
-SL=0.5 #50 percentage
+1. **Clone the repository**:
+```bash
+git clone <repository-url>
+cd git
 ```
-2. Add the wallet address you want to block on a new line and save the file.
+
+2. **Create a virtual environment** (recommended):
+```bash
+python -m venv venv
+
+# On Windows
+venv\Scripts\activate
+
+# On Linux/Mac
+source venv/bin/activate
 ```
-0x1234567890abcdef1234567890abcdef12345678
-0xabcdef1234567890abcdef1234567890abcdef12
+
+3. **Install dependencies**:
+```bash
+pip install -r requirements.txt
 ```
-3. Run `pumpfun_sniper_jitoshred_demo.exe`.
 
----
-### Test Result: Same Block
-![2-22-2025-09-41](https://github.com/user-attachments/assets/2ded6e35-7575-491e-ac43-5f463b0b9cba)
+4. **Set up environment variables**:
+```bash
+# Copy the example environment file
+cp .env.example .env
 
-- Detect: https://solscan.io/tx/5o7ajnZ9CRf7FBYEvydu8vapJJDWtKCvRFiTUBmbeu2FmmDhAQQy3c9YFFhpTucr2SZcrf2aUsDanEVjYgwN9kBc
-- Bought: https://solscan.io/tx/3vgim3MwJsdtahXqfW2DrzTAWpVQ8EUTed2cjzHuqxSfUpfp72mgzZhiVosWaCUHdqJTDHpQaYh5xN7rkHGmzqWv
-- Dexscreener: https://dexscreener.com/solana/A1zZXCq2DmqwVD4fLDzmgQ3ceY6LQnMBVokejqnHpump
+# Edit .env with your RPC URLs and private keys
+```
 
----
-## Donate
+## Configuration
 
-👉👌 6vT7nrqtbXDWVc8cRUtifxgfDZi19aW7qhcZg2hSepwb
+Create a `.env` file in the project root with the following variables:
 
----
-## Recommended Server Platforms
+```env
+# Ethereum Configuration
+ETHEREUM_RPC_URL=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+ETHEREUM_PRIVATE_KEY=your_ethereum_private_key_here
 
-For optimal performance with Jito Shred Stream, we recommend using a dedicated server located in **New York (NY)** from one of these providers:
+# Polygon Configuration
+POLYGON_RPC_URL=https://polygon-rpc.com
+POLYGON_PRIVATE_KEY=your_polygon_private_key_here
 
-| Provider | Website |
-|----------|---------|
-| **Cherry Servers** | [cherryservers.com](https://www.cherryservers.com) |
-| **Teraswitch** | [teraswitch.com](https://teraswitch.com) |
-| **Latitude.sh** | [latitude.sh](https://www.latitude.sh) |
+# Solana Configuration
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+SOLANA_PRIVATE_KEY=your_base58_encoded_solana_private_key_here
 
-> 💡 **Tip**: Low-latency NY servers are critical for maximizing Jito Shred Stream performance and achieving same-block execution.
+# BNB Chain Configuration
+BNB_RPC_URL=https://bsc-dataseed.binance.org
+BNB_PRIVATE_KEY=your_bnb_chain_private_key_here
+```
 
----
+**Security Note**: Never commit your `.env` file or private keys to version control. The `.gitignore` file is configured to exclude `.env` files.
+
+### Getting RPC URLs
+
+- **Ethereum**: Use Infura, Alchemy, or QuickNode
+- **Polygon**: Use Polygon RPC endpoints or Alchemy
+- **Solana**: Use public RPC endpoints or Helius, QuickNode
+- **BNB Chain**: Use Binance public RPC or QuickNode
+
+### Private Keys
+
+- **EVM Chains** (Ethereum, Polygon, BNB Chain): Use your wallet's private key (0x-prefixed hex string)
+- **Solana**: Use base58-encoded private key from your Solana wallet
+
+## Usage
+
+### Basic Example
+
+```python
+from src.trader.orchestrator import PredictionMarketTrader
+from src.utils.config import load_config
+from src.core.interfaces import PositionSide
+
+# Load configuration
+config = load_config()
+
+# Initialize trader
+trader = PredictionMarketTrader(config)
+
+# List available platforms
+platforms = trader.list_platforms()
+print(f"Available platforms: {platforms}")
+
+# Get all markets
+markets = trader.get_all_markets(limit=10)
+for market in markets:
+    print(f"{market.platform}: {market.question}")
+
+# Get a specific market
+market = trader.get_market("polymarket", "market_id_here")
+
+# Get current price
+price = trader.get_price("polymarket", "market_id_here", PositionSide.YES)
+print(f"Current YES price: {price}")
+
+# Get orderbook
+orderbook = trader.get_orderbook("polymarket", "market_id_here")
+```
+
+### Creating Positions
+
+```python
+from decimal import Decimal
+
+# Create a YES position
+tx_hash = trader.create_position(
+    platform="polymarket",
+    market_id="0x...",
+    side=PositionSide.YES,
+    amount=Decimal("100.0"),  # Amount in USDC or platform token
+    max_price=Decimal("0.60")  # Optional: maximum price to pay
+)
+
+print(f"Transaction hash: {tx_hash}")
+
+# Wait for confirmation
+trader.wait_for_confirmation("polymarket", tx_hash)
+```
+
+### Managing Positions
+
+```python
+# Get all positions for a user address
+user_address = "0x..."  # Your wallet address
+positions = trader.get_all_positions(user_address)
+
+for position in positions:
+    print(f"{position.platform}: {position.shares} shares @ {position.cost_basis}")
+
+# Close a position (full or partial)
+tx_hash = trader.close_position(
+    platform="polymarket",
+    position_id="position_id_here",
+    shares=Decimal("50.0")  # None to close full position
+)
+```
+
+### Running the Example
+
+```bash
+python main.py
+```
+
+## API Reference
+
+### PredictionMarketTrader
+
+The main orchestrator class that provides a unified interface to all platforms.
+
+#### Methods
+
+- `list_platforms() -> List[str]`: Get list of available platforms
+- `get_all_markets(limit: int = 100) -> List[Market]`: Fetch markets from all platforms
+- `get_market(platform: str, market_id: str) -> Optional[Market]`: Get a specific market
+- `get_all_positions(user_address: str) -> List[Position]`: Get positions across all platforms
+- `create_position(platform: str, market_id: str, side: PositionSide, amount: Decimal, max_price: Optional[Decimal] = None) -> str`: Create a new position
+- `close_position(platform: str, position_id: str, shares: Optional[Decimal] = None) -> str`: Close a position
+- `get_price(platform: str, market_id: str, side: PositionSide) -> Decimal`: Get current price
+- `get_orderbook(platform: str, market_id: str) -> Dict[str, Any]`: Get orderbook data
+
+### Data Models
+
+#### Market
+```python
+@dataclass
+class Market:
+    market_id: str
+    question: str
+    description: Optional[str]
+    outcomes: List[str]
+    status: MarketStatus
+    end_date: Optional[datetime]
+    volume: Optional[Decimal]
+    liquidity: Optional[Decimal]
+    platform: str
+    blockchain: str
+    metadata: Dict[str, Any]
+```
+
+#### Position
+```python
+@dataclass
+class Position:
+    position_id: str
+    market_id: str
+    side: PositionSide
+    shares: Decimal
+    cost_basis: Decimal
+    current_value: Decimal
+    platform: str
+    blockchain: str
+```
+
+## Development
+
+### Project Structure
+
+- **Interfaces** (`src/core/interfaces.py`): Define abstract base classes and common data models
+- **Blockchain Connectors**: Implement blockchain-specific operations (balance checks, transaction sending)
+- **Market Connectors**: Implement platform-specific API interactions and data mapping
+- **Orchestrator**: Coordinates between blockchain and market connectors
+
+### Adding a New Platform
+
+1. Create a new connector class in `src/markets/` that inherits from `PredictionMarketConnector`
+2. Implement all abstract methods
+3. Add the connector to `PredictionMarketTrader._initialize_connectors()`
+4. Update the platform-to-blockchain mapping if needed
+
+### Adding a New Blockchain
+
+1. Create a new connector class in `src/blockchains/` that inherits from `BlockchainConnector`
+2. Implement all abstract methods
+3. Add configuration loading in `src/utils/config.py`
+4. Update the orchestrator to support the new blockchain
+
+## Limitations
+
+- **Trading Operations**: The `create_position` and `close_position` methods currently raise `NotImplementedError` for most platforms. Full implementation requires:
+  - Smart contract ABIs and interaction logic
+  - Platform-specific transaction construction
+  - Order matching and execution logic
+  
+- **API Rate Limits**: Some platforms may have rate limits. Consider implementing rate limiting and retry logic for production use.
+
+- **Error Handling**: Basic error handling is implemented. Production use should include comprehensive error handling and recovery mechanisms.
+
+## Security Considerations
+
+- **Private Keys**: Never share or commit private keys. Use environment variables or secure key management systems.
+- **RPC Endpoints**: Use reputable RPC providers. Consider using private endpoints for production.
+- **Transaction Fees**: Be aware of gas fees on EVM chains and transaction fees on Solana.
+- **Smart Contract Audits**: Verify smart contract addresses before interacting with them.
+
+## Contributing
+
+Contributions are welcome! Please ensure:
+- Code follows PEP 8 style guidelines
+- New features include appropriate tests
+- Documentation is updated
+- Security best practices are followed
+
 ## Support
 
-For support and further inquiries, please connect via Telegram.
+For issues, questions, or contributions, please open an issue on the repository.
+
+## Disclaimer
+
+This software is provided as-is for educational and research purposes. Trading on prediction markets involves financial risk. Use at your own discretion and always verify transactions before execution.

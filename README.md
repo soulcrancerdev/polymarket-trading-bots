@@ -121,7 +121,7 @@ POLYGON_PRIVATE_KEY=your_polygon_private_key_here
 - Exceptional uptime & network performance  
 
 My referral link (supports ongoing development):  
-**[Trading VPS →](https://app.tradingvps.io/index.php?m=refer&id=795380)**
+**[Trading VPS →](https://app.tradingvps.io/aff.php?aff=60)**
 
 Most users see noticeably better fills and lower slippage after switching.
 

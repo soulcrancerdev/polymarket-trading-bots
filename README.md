@@ -1,6 +1,6 @@
-# Polymarket - Copy Trading & Arbitrage Bot (Python & Rust)
+# Polymarket Copy Trading Bot
 
-A powerful dual-implementation bot for automated copy trading and arbitrage on Polymarket (Polygon blockchain). Choose between a flexible Python version or an ultra-fast Rust version for optimized performance.
+A high-performance Rust-based automated trading bot that copies trades from successful Polymarket traders (whales) in real-time. Monitor blockchain events, execute copy trades automatically, and manage risk with built-in circuit breakers.
 
 ## Contact & Support
 
@@ -19,54 +19,205 @@ https://polygonscan.com/tx/0x7f3552f2da30d362c68afe885b8c7a64e38a19e59b5872b4025
 ## Trial Versions
 
 ### **Polymarket Copy Trading Bot - Rust (Demo)**  
-- 🗂️ [polymarket_copytrading_bot_demo.zip](https://github.com/user-attachments/files/24639348/polymarket_copytrading_bot_demo.zip)
-- 🗂️ [mempool_monitor.zip](https://github.com/user-attachments/files/24639353/mempool_monitor.zip)
+- 🗂️ 
+- 🗂️ 
+- 🗂️ 
+- 🗂️ 
 
 ### How To Run
-1. Environment Variables Settings
+1. Extract all *.zip files into the same folder.
+2. Environment Variables Settings
    ```
-    PRIVATE_KEY= # Your wallet's private key (64-character hex string, no 0x prefix).
-    FUNDER_ADDRESS = # Your 40-character hex wallet address (with or without 0x), matching your PRIVATE_KEY.
-    TARGET_WHALE_ADDRESS= # The whale address you want to copy trades from (40-character hex, no 0x prefix).
-    ALCHEMY_API_KEY= # WebSocket RPC Provider (Alchemy is recommended for beginners, Contact me for this API key).
+   - `PRIVATE_KEY` - Your wallet's private key (64 hex chars, no 0x)
+   - `FUNDER_ADDRESS` - Your wallet address
+   - `TARGET_WHALE_ADDRESS` - Whale address to copy (40 hex chars, no 0x)
+   - `ALCHEMY_API_KEY` - WebSocket RPC provider key
+   - `ENABLE_TRADING` - Enable/disable trading (true/false)
+   - `MOCK_TRADING` - Simulation mode (true/false)
+   - `POSITION_SCALE` - Position scaling factor (1.00 = 100%, 0.02 = 2%)
+   - `BASE_PRICE_BUFFER` - Base price buffer for all trades
+   - `MIN_WHALE_SHARES` - Minimum whale trade size to copy
+   - `MIN_TRADE_VALUE_USD` - Minimum trade value in USD
    ```
-3. Run `polymarket_copytrading_bot_demo.exe`
+3. Execute in the following order:
+
+   1. **`validate_setup.exe`**  
+      - **Description**: Checks your `.env` config and environment for missing/invalid settings before you risk any money.
+
+   2. **`approve_tokens.exe`**  
+      - **Description**: Sends on‑chain approvals so Polymarket contracts can spend your USDC and Conditional Tokens.
+
+   3. **`confirmed_block_bot.exe`** 
+      - **Description**: Runs the copy‑trading bot that waits for block confirmation, this is more reliable.
+
+   4. **`mempool_bot.exe`**
+      - **Description**: Runs the mempool‑based copy‑trading bot that watches pending transactions and mirrors whale trades fast.
+
 <img width="1004" height="765" alt="Screenshot_7" src="https://github.com/user-attachments/assets/108af5c3-d585-41c2-bbac-536eb1472cc7" />
 
-### Compact Features Summary
+## ✨ Features
 
-- **Polymarket Trading**: Real-time blockchain monitoring and automated trading on Polymarket via Polygon.
-- **Copy Trading**: Mirror whale trades with configurable sizing, filters, and tiered strategies.
-- **Order & Risk Management**: Advanced order types, retries, buffers, and circuit breakers to ensure safe trading.
-- **Market-Specific**: Support for ATP Tennis and Ligue 1 Soccer markets with caching and live status detection.
-- **Performance & Reliability**: Low-latency Rust implementation with reconnections and error handling.
-- **Configuration & Logging**: Environment setup, validation tools, CSV logs, and detailed status reporting.
+### Core Functionality
+- **Real-time Trade Monitoring**: WebSocket-based monitoring of blockchain events (`OrdersFilled`)
+- **Automatic Trade Execution**: Copies whale trades with configurable position scaling
+- **Dual Trading Modes**:
+  - **Confirmed Block Mode**: More reliable, waits for block confirmation
+  - **Mempool Mode**: Faster execution, monitors pending transactions
+- **Smart Order Execution**: Tiered execution strategies based on trade size
+- **Order Resubmission**: Automatic retry with price escalation for failed orders
 
-### Copy Trading Strategy (Current Version)
+### Risk Management
+- **Circuit Breaker System**: Multi-layer protection against dangerous market conditions
+- **Liquidity Checks**: Validates order book depth before executing trades
+- **Consecutive Trade Detection**: Monitors for rapid trade sequences
+- **Configurable Safety Thresholds**: Customizable risk parameters via environment variables
 
-- **Main idea:** Automatically copy big traders at about 2% size, with safety checks to avoid risks.  
-- **How:** Detect whale trades in real-time, decide how much to copy based on trade size, and place quick orders.  
-- **Adjustments:** Adds small buffers to prices for better fills, especially in volatile markets like tennis and soccer.  
-- **Retries:** If orders don’t fill, try again a few times, sometimes slightly increasing the price for large trades.  
-- **Safety:** Stops trading if the market is illiquid or too risky, blocking trades for a few hours.  
-- **Logs:** Keeps track of all trades for review.
+### Market Intelligence
+- **Market Data Caching**: Efficient caching of market information (neg-risk status, slugs, sport tokens)
+- **Sport-Specific Handling**: Special price buffers for tennis (ATP) and soccer (Ligue 1) markets
+- **Live Market Detection**: Identifies and handles live markets differently
+
+### Trading Configuration
+- **Position Scaling**: Configurable position size as percentage of whale trades
+- **Price Buffers**: Adjustable price buffers for different trade tiers
+- **Minimum Trade Filters**: Skip trades below configurable thresholds
+- **Probability-Based Sizing**: Optional probability-adjusted position sizing
+
+### Developer Tools
+- **Token Approval Utility**: Automated USDC and Conditional Token approvals
+- **Configuration Validator**: Pre-flight checks for environment setup
+- **Trade Monitor**: Logs personal fills to CSV for analysis
+- **Order Type Testing**: Test FAK order responses
+
+## 📁 Directory Structure
+
+```
+rust-polymarekt-copy-trading-bot/
+├── src/
+│   ├── main.rs                 # Main entry point (confirmed block mode)
+│   ├── lib.rs                  # Core library (CLOB client, API interactions)
+│   │
+│   ├── bin/                    # Binary executables
+│   │   ├── mempool_monitor.rs  # Mempool-based trading mode
+│   │   ├── approve_tokens.rs   # Token approval utility
+│   │   ├── validate_setup.rs   # Configuration validator
+│   │   ├── trade_monitor.rs    # Personal fills logger
+│   │   └── test_order_types.rs # Order testing utility
+│   │
+│   ├── config/                 # Configuration management
+│   │   └── mod.rs              # Environment variables, constants, tier params
+│   │
+│   ├── models/                 # Data structures
+│   │   └── mod.rs              # OrderInfo, ParsedEvent, WorkItem, etc.
+│   │
+│   ├── trading/                # Trading logic
+│   │   ├── mod.rs              # Trading module exports
+│   │   ├── orders.rs           # Order creation and submission
+│   │   └── risk_guard.rs       # Circuit breaker system
+│   │
+│   ├── markets/                # Market-specific logic
+│   │   ├── mod.rs              # Markets module exports
+│   │   ├── market_cache.rs     # Market data caching
+│   │   ├── tennis_markets.rs   # ATP market detection & buffers
+│   │   └── soccer_markets.rs   # Ligue 1 market detection & buffers
+│   │
+│   └── utils/                  # Utility functions
+│       └── mod.rs              # Profiler and helper functions
+│
+├── scripts/                    # Python utility scripts (cache warming, monitoring)
+├── docs/                       # Documentation
+├── .env.example                # Environment variable template
+├── Cargo.toml                  # Rust project configuration
+└── Makefile                    # Build automation
+```
 ---
+## 🚀 Getting Started
 
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd polymarket-copy-trading-arbitrage-bot
+   ```
+
+2. **Configure environment variables**
+   - Copy `.env.example` to `.env`
+   - Fill in your configuration (see [Environment Variables](#environment-variables) below)
+
+3. **Run the bot**
+   ```bash
+   make run
+   ```
+
+   This command will:
+   - Validate your setup
+   - Build the project in release mode
+   - Start the confirmed block trading bot
+
+### Environment Variables
+
+Create a `.env` file in the project root with the following variables:
+
+```bash
+# Required
+PRIVATE_KEY=your_private_key_here                    # 64 hex chars, no 0x prefix
+FUNDER_ADDRESS=your_wallet_address                    # Your wallet address
+TARGET_WHALE_ADDRESS=whale_address_to_copy            # 40 hex chars, no 0x prefix
+ALCHEMY_API_KEY=your_alchemy_api_key                  # WebSocket RPC provider key
+
+# Trading Configuration
+ENABLE_TRADING=false                                  # Set to true to enable trading
+MOCK_TRADING=true                                     # Set to true for simulation mode
+POSITION_SCALE=1.00                                   # Position scaling (1.00 = 100%, 0.02 = 2%)
+BASE_PRICE_BUFFER=0.00                                # Base price buffer for all trades
+MIN_WHALE_SHARES=500.0                                # Minimum whale trade size to copy
+MIN_TRADE_VALUE_USD=1.0                               # Minimum trade value in USD
+MIN_SHARES=1.0                                        # Minimum share count
+ENABLE_PROB_SIZING=true                               # Enable probability-based sizing
+
+# WebSocket Configuration
+WS_URL=wss://polygon-mainnet.g.alchemy.com/v2/YOUR_KEY
+```
+
+See `.env.example` for a complete list of all available configuration options.
+
+### Running Different Modes
+
+- **Confirmed Block Bot** (default, more reliable):
+  ```bash
+  make run
+  # or
+  cargo run --release
+  ```
+
+- **Mempool Bot** (faster, monitors pending transactions):
+  ```bash
+  cargo run --release --bin mempool_bot
+  ```
+
+- **Validate Setup**:
+  ```bash
+  cargo run --release --bin validate_setup
+  ```
+
+- **Approve Tokens**:
+  ```bash
+  cargo run --release --bin approve_tokens
+  ```
+
+---
 ## 🚀 VPS Recommendation – Low-Latency Execution & GEO restrictions support
 
 **Latency = edge** in Polymarket.
 
-**Trading VPS** is the go-to low-latency hosting solution among serious prediction-market and crypto bot runners.
+**[Trading VPS →](https://app.tradingvps.io/aff.php?aff=60)** is the go-to low-latency hosting solution among serious prediction-market and crypto bot runners.
 
 - Sub-10 ms to major Polygon nodes  
 - Crypto/HFT-optimized locations  
 - Exceptional uptime & network performance  
 
 Note: Polymarket has some GEO restrictions, so many Polymarket traders are using our AMS VPS and love it.  
-
-**[Trading VPS →](https://app.tradingvps.io/aff.php?aff=60)**
-
-Most users see noticeably better fills and lower slippage after switching.
 ---
 
 ## Popular Copy Trading Strategies
@@ -118,4 +269,4 @@ Based on trending discussions on X in 2025-2026, here are key strategies for suc
 
 Fork, star, and contribute to the project on GitHub.
 
-Reach out via Telegram: [@soulcrancerdev](https://t.me/soulcrancerdev)
+For the updates of the current copy trader w/ your tradin' logic, Reach out via Telegram: [@soulcrancerdev](https://t.me/soulcrancerdev)

@@ -31,7 +31,7 @@ https://polygonscan.com/tx/0x7f3552f2da30d362c68afe885b8c7a64e38a19e59b5872b4025
     ALCHEMY_API_KEY= # WebSocket RPC Provider (Alchemy is recommended for beginners, Contact me for this API key).
    ```
 3. Run `polymarket_copytrading_bot_demo.exe`
-<img width="993" height="482" alt="Screenshot_6" src="https://github.com/user-attachments/assets/2b670c0a-a86d-419f-bd6b-0288b82a79a1" />
+<img width="1004" height="765" alt="Screenshot_7" src="https://github.com/user-attachments/assets/108af5c3-d585-41c2-bbac-536eb1472cc7" />
 
 ### Compact Features Summary
 

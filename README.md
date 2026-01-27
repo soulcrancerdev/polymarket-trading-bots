@@ -10,11 +10,8 @@ A high-performance Rust-based automated trading bot that copies trades from succ
 ## How It Works
 Watch demo: https://www.youtube.com/watch?v=6ZRIIPzv3d8
 
-- buy example:
-https://polygonscan.com/tx/0x04578bb1d11cd4d76ee5cbe60e8ffc1ac6d19e314c9205c31d7048af262125d7
-- copy example:
-https://polygonscan.com/tx/0x7f3552f2da30d362c68afe885b8c7a64e38a19e59b5872b402508862f5f96b84
-
+## How To Trade W/ Telegram
+Watch demo: https://www.youtube.com/watch?v=8PC0bKSgfhM
 ---
 ## Trial Versions
 

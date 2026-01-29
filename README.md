@@ -211,7 +211,9 @@ See `.env.example` for a complete list of all available configuration options.
 
 **[Trading VPS →](https://app.tradingvps.io/aff.php?aff=60)** is the go-to low-latency hosting solution among serious prediction-market and crypto bot runners.
 
-- Sub-10 ms to major Polygon nodes  
+<img width="803" height="300" alt="image" src="https://github.com/user-attachments/assets/7a3e4ce9-3e8a-4aa2-a8d6-f18dce66ad29" />
+
+- Sub-1 ms to major Polygon nodes  
 - Crypto/HFT-optimized locations  
 - Exceptional uptime & network performance  
 

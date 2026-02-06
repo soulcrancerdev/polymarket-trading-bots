@@ -59,7 +59,8 @@
 - 🔒 Crypto/HFT-optimized locations  
 - 📈 Exceptional uptime & network performance  
 
-Note: Polymarket has some GEO restrictions, so many Polymarket traders are using our AMS VPS and love it.  
+Note: Polymarket has some GEO restrictions, so many Polymarket traders are using our AMS VPS and love it.
+
 ---
 
 ## 📈 Popular Copy Trading Strategies
